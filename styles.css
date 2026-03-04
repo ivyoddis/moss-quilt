@@ -1,10 +1,13 @@
 :root {
   --primary: #b8e600;
   --ink: #000;
-  --line: 0.5px;
-  /* Thin header, generous sides — proportions similar to themadeshop.com (inspected: ~14px vertical, ~56px horizontal) */
+  --line: 1px;
+  /* 1440px layout, 33px left/right margin; header and quilt align to same edges */
+  --layout-width: 1440px;
+  --margin-h: 33px;
+  --quilt-width: calc(var(--layout-width) - 2 * var(--margin-h));
   --header-pad-v: 14px;
-  --header-pad-h: 56px;
+  --header-pad-h: var(--margin-h);
 }
 
 *,
@@ -35,38 +38,44 @@ body {
   position: fixed;
   inset: 0 0 auto 0;
   z-index: 100;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
   align-items: flex-end;
+  justify-content: space-between;
   gap: 12px;
-  padding: var(--header-pad-v) var(--header-pad-h);
+  padding: var(--header-pad-v) var(--margin-h);
+  width: var(--layout-width);
+  max-width: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  box-sizing: border-box;
   background: #fff;
   color: var(--ink);
   user-select: none;
 }
 
 .page {
-  width: 100%;
-  padding: calc(var(--header-pad-v) * 2 + 1em) var(--header-pad-h) 0;
+  width: var(--layout-width);
+  max-width: 100%;
+  margin: 0 auto;
+  padding: calc(var(--header-pad-v) * 2 + 1em) var(--margin-h) 0;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .header__left {
-  justify-self: start;
   font-size: 14px;
   letter-spacing: 0.01em;
 }
 
 .header__center {
-  justify-self: center;
   font-size: 14px;
   letter-spacing: 0.01em;
   text-align: center;
-  max-width: min(720px, 72vw);
+  flex: 1;
+  max-width: 60%;
 }
 
 .header__right {
-  justify-self: end;
   border: none;
   background: none;
   color: var(--ink);
@@ -77,19 +86,22 @@ body {
   padding: 0;
 }
 
-.header__right:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 2px;
+.header__right:focus-visible,
+.piece:focus,
+.piece:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 
-/* 2 columns, 3 rows, fixed quilt width, scrollable — blocks stack vertically */
+/* 2 columns, 3 rows, full width between margins, fixed width, scroll vertically */
 .quilt {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 50vh 50vh 50vh;
-  width: 960px;
-  max-width: 960px;
+  grid-template-rows: calc(var(--quilt-width) / 2) calc(var(--quilt-width) / 2) calc(var(--quilt-width) / 2);
+  width: var(--quilt-width);
+  max-width: var(--quilt-width);
   gap: 0;
+  overflow: hidden;
 }
 
 .block {
@@ -108,11 +120,18 @@ body {
 
 .piece {
   cursor: pointer;
+  outline: none;
+  box-shadow: none;
+}
+
+.piece:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 .piece-outline {
-  stroke: var(--ink);
-  stroke-width: 0.5;
+  stroke: #000;
+  stroke-width: 1px;
   vector-effect: non-scaling-stroke;
   fill: none;
 }
@@ -132,8 +151,8 @@ body {
 
 .upload-arrow {
   position: absolute;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -142,13 +161,17 @@ body {
   opacity: 0;
   transition: opacity 120ms ease;
   z-index: 5;
+  border: none;
+  background: none;
 }
 
 .upload-arrow::before {
   content: "↑";
-  font-size: 14px;
+  font-size: 12px;
+  font-weight: 400;
   line-height: 1;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.5);
+  -webkit-text-stroke: 0;
 }
 
 @media (hover: hover) and (pointer: fine) {

@@ -1,6 +1,6 @@
 /* global supabase */
 
-const SUPABASE_URL = "[https://nxzuqwbmtbrmkgwazojt.supabase.co](https://nxzuqwbmtbrmkgwazojt.supabase.co/)";
+const SUPABASE_URL = "https://nxzuqwbmtbrmkgwazojt.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_xOAZSQ8gkd_ZUFHgud7DRA_JeXjZXqR";
 const SUPABASE_STORAGE_BUCKET = "moss-quilt";
 const STORAGE_PREFIX = "pieces";
@@ -8,127 +8,135 @@ const MAX_BYTES = 5 * 1024 * 1024;
 
 const EMPTY_FILL = "#B8E600";
 
-const BLOCKS = [
-  {
-    id: 1,
-    name: "Log Cabin",
-    pieces: [
-      // center
-      "40,40 60,40 60,60 40,60",
-      // ring 1
-      "40,25 60,25 60,40 40,40",
-      "60,25 75,25 75,75 60,75 60,60 60,40",
-      "25,60 40,60 40,75 25,75",
-      "25,25 40,25 40,60 25,60",
-      "25,75 75,75 75,85 25,85",
-      "75,25 85,25 85,85 75,85 75,75",
-      "25,15 85,15 85,25 25,25",
-      "15,15 25,15 25,85 15,85",
-      "15,85 85,85 85,95 15,95",
-      "85,15 95,15 95,95 85,95 85,85",
-    ],
-  },
-  {
-    id: 2,
-    name: "Ohio Star",
-    pieces: [
-      // 3x3-ish with star points
-      "0,0 33.33,0 33.33,33.33 0,33.33",
-      "33.33,0 66.66,0 66.66,33.33 33.33,33.33",
-      "66.66,0 100,0 100,33.33 66.66,33.33",
-      "0,33.33 33.33,33.33 33.33,66.66 0,66.66",
-      // center square
-      "33.33,33.33 66.66,33.33 66.66,66.66 33.33,66.66",
-      "66.66,33.33 100,33.33 100,66.66 66.66,66.66",
-      "0,66.66 33.33,66.66 33.33,100 0,100",
-      "33.33,66.66 66.66,66.66 66.66,100 33.33,100",
-      "66.66,66.66 100,66.66 100,100 66.66,100",
-      // add 4 star-point triangles overlay areas as separate uploadable pieces
-      "33.33,0 66.66,0 50,16.66",
-      "100,33.33 100,66.66 83.33,50",
-      "33.33,100 66.66,100 50,83.33",
-      "0,33.33 0,66.66 16.66,50",
-    ],
-  },
-  {
-    id: 3,
-    name: "Flying Geese",
-    pieces: [
-      // four geese units stacked
-      "0,0 100,0 75,25 25,25",
-      "0,0 25,25 0,25",
-      "100,0 100,25 75,25",
-      "0,25 100,25 75,50 25,50",
-      "0,25 25,50 0,50",
-      "100,25 100,50 75,50",
-      "0,50 100,50 75,75 25,75",
-      "0,50 25,75 0,75",
-      "100,50 100,75 75,75",
-      "0,75 100,75 75,100 25,100",
-      "0,75 25,100 0,100",
-      "100,75 100,100 75,100",
-    ],
-  },
-  {
-    id: 4,
-    name: "Nine Patch",
-    pieces: [
-      "0,0 33.33,0 33.33,33.33 0,33.33",
-      "33.33,0 66.66,0 66.66,33.33 33.33,33.33",
-      "66.66,0 100,0 100,33.33 66.66,33.33",
-      "0,33.33 33.33,33.33 33.33,66.66 0,66.66",
-      "33.33,33.33 66.66,33.33 66.66,66.66 33.33,66.66",
-      "66.66,33.33 100,33.33 100,66.66 66.66,66.66",
-      "0,66.66 33.33,66.66 33.33,100 0,100",
-      "33.33,66.66 66.66,66.66 66.66,100 33.33,100",
-      "66.66,66.66 100,66.66 100,100 66.66,100",
-    ],
-  },
-  {
-    id: 5,
-    name: "Chimneys and Cornerstones",
-    pieces: [
-      // large center
-      "20,20 80,20 80,80 20,80",
-      // cornerstones
-      "0,0 20,0 20,20 0,20",
-      "80,0 100,0 100,20 80,20",
-      "0,80 20,80 20,100 0,100",
-      "80,80 100,80 100,100 80,100",
-      // chimneys (rect strips)
-      "20,0 80,0 80,20 20,20",
-      "0,20 20,20 20,80 0,80",
-      "80,20 100,20 100,80 80,80",
-      "20,80 80,80 80,100 20,100",
-      // inner chimney accents
-      "35,20 45,20 45,80 35,80",
-      "55,20 65,20 65,80 55,80",
-      "20,35 80,35 80,45 20,45",
-      "20,55 80,55 80,65 20,65",
-    ],
-  },
-  {
-    id: 6,
-    name: "Courthouse Steps",
-    pieces: [
-      "40,40 60,40 60,60 40,60",
-      "40,30 60,30 60,40 40,40",
-      "60,30 70,30 70,70 60,70 60,60 60,40",
-      "30,60 40,60 40,70 30,70",
-      "30,30 40,30 40,60 30,60",
-      "30,70 70,70 70,80 30,80",
-      "70,30 80,30 80,80 70,80 70,70",
-      "30,20 80,20 80,30 30,30",
-      "20,20 30,20 30,80 20,80",
-      "20,80 80,80 80,90 20,90",
-      "80,20 90,20 90,90 80,90 80,80",
-      "20,10 90,10 90,20 20,20",
-      "10,10 20,10 20,90 10,90",
-      "10,90 90,90 90,100 10,100",
-      "90,10 100,10 100,100 90,100 90,90",
-    ],
-  },
+const BLOCK_NAMES = [
+  "Log Cabin",
+  "Ohio Star",
+  "Flying Geese",
+  "Nine Patch",
+  "Chimneys and Cornerstones",
+  "Courthouse Steps",
 ];
+
+let BLOCKS = [];
+
+const SVG_VIEW_WIDTH = 1440;
+const SVG_VIEW_HEIGHT = 1439.22;
+const COLS = 2;
+const ROWS = 3;
+const CELL_W = SVG_VIEW_WIDTH / COLS;
+const CELL_H = SVG_VIEW_HEIGHT / ROWS;
+
+function parseTransform(transformAttr) {
+  if (!transformAttr) return (x, y) => [x, y];
+  const tx = 0, ty = 0;
+  let a = 1, b = 0, c = 0, d = 1, e = 0, f = 0;
+  const translateMatch = transformAttr.match(/translate\s*\(\s*([-\d.]+)\s+([-\d.]+)\s*\)/);
+  const rotateMatch = transformAttr.match(/rotate\s*\(\s*([-\d.]+)\s*\)/);
+  if (rotateMatch) {
+    const deg = parseFloat(rotateMatch[1]);
+    const r = (deg * Math.PI) / 180;
+    a = Math.cos(r); b = Math.sin(r); c = -b; d = a;
+  }
+  if (translateMatch) {
+    e = parseFloat(translateMatch[1]);
+    f = parseFloat(translateMatch[2]);
+  }
+  return (x, y) => [a * x + c * y + e, b * x + d * y + f];
+}
+
+function rectToPoints(rect) {
+  const x = parseFloat(rect.getAttribute("x")) || 0;
+  const y = parseFloat(rect.getAttribute("y")) || 0;
+  const w = parseFloat(rect.getAttribute("width")) || 0;
+  const h = parseFloat(rect.getAttribute("height")) || 0;
+  const tr = parseTransform(rect.getAttribute("transform"));
+  const corners = [[x, y], [x + w, y], [x + w, y + h], [x, y + h]];
+  return corners.map(([px, py]) => tr(px, py));
+}
+
+function polygonToPoints(polygon) {
+  const points = polygon.getAttribute("points").trim().split(/[\s,]+/).map(Number);
+  const out = [];
+  for (let i = 0; i < points.length; i += 2) out.push([points[i], points[i + 1]]);
+  return out;
+}
+
+function centroid(points) {
+  let sx = 0, sy = 0, n = points.length;
+  for (const [px, py] of points) { sx += px; sy += py; }
+  return [sx / n, sy / n];
+}
+
+function cellIndex(cx, cy) {
+  const col = Math.floor(cx / CELL_W);
+  const row = Math.floor(cy / CELL_H);
+  const c = Math.max(0, Math.min(COLS - 1, col));
+  const r = Math.max(0, Math.min(ROWS - 1, row));
+  return r * COLS + c;
+}
+
+function normalizeToBlock(points, blockMinX, blockMinY, blockW, blockH) {
+  if (blockW <= 0 || blockH <= 0) return points.map(([px, py]) => `${px},${py}`);
+  return points.map(([px, py]) =>
+    `${((px - blockMinX) / blockW * 100).toFixed(2)},${((py - blockMinY) / blockH * 100).toFixed(2)}`
+  ).join(" ");
+}
+
+async function loadBlocksFromSVG() {
+  const res = await fetch("moss-quilts-grid.svg");
+  const text = await res.text();
+  const doc = new DOMParser().parseFromString(text, "image/svg+xml");
+  const shapes = [];
+  const walk = (el) => {
+    if (!el) return;
+    const tag = el.tagName?.toLowerCase();
+    if (tag === "rect" && (el.getAttribute("class") === "st0" || el.getAttribute("class") === "st1")) {
+      const w = parseFloat(el.getAttribute("width")) || 0;
+      const h = parseFloat(el.getAttribute("height")) || 0;
+      if (w > 600 && h > 600) return;
+      const pts = rectToPoints(el);
+      if (pts.length >= 3) shapes.push(pts);
+    } else if (tag === "polygon" && el.getAttribute("class") === "st0") {
+      const pts = polygonToPoints(el);
+      if (pts.length >= 3) shapes.push(pts);
+    }
+    if (el.children) for (const c of el.children) walk(c);
+  };
+  walk(doc.documentElement);
+  const ohioStarCenterTriangles = [
+    [[834.525, 376.57], [949.05, 262.04], [1178.1, 262.04]],
+    [[834.525, 376.57], [1178.1, 262.04], [1178.1, 491.09]],
+    [[834.525, 376.57], [1178.1, 491.09], [949.05, 491.09]],
+    [[834.525, 376.57], [949.05, 491.09], [949.05, 262.04]],
+  ];
+  ohioStarCenterTriangles.forEach(tri => shapes.push(tri));
+  const byCell = Array.from({ length: 6 }, () => []);
+  for (const pts of shapes) {
+    const [cx, cy] = centroid(pts);
+    const idx = cellIndex(cx, cy);
+    byCell[idx].push(pts);
+  }
+  const blocks = [];
+  for (let i = 0; i < 6; i++) {
+    const list = byCell[i];
+    if (list.length === 0) {
+      blocks.push({ id: i + 1, name: BLOCK_NAMES[i], pieces: [] });
+      continue;
+    }
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    for (const pts of list) {
+      for (const [px, py] of pts) {
+        minX = Math.min(minX, px); minY = Math.min(minY, py);
+        maxX = Math.max(maxX, px); maxY = Math.max(maxY, py);
+      }
+    }
+    const blockW = maxX - minX || 1;
+    const blockH = maxY - minY || 1;
+    const pieces = list.map(pts => normalizeToBlock(pts, minX, minY, blockW, blockH));
+    blocks.push({ id: i + 1, name: BLOCK_NAMES[i], pieces });
+  }
+  return blocks;
+}
 
 function $(sel) {
   return document.querySelector(sel);
@@ -225,10 +233,13 @@ function render() {
   }
 }
 
-function showArrow(blockEl) {
+function showArrow(blockEl, clientX, clientY) {
   const arrow = blockEl.querySelector(".upload-arrow");
-  arrow.style.left = "50%";
-  arrow.style.top = "50%";
+  const rect = blockEl.getBoundingClientRect();
+  const x = Math.max(10, Math.min(rect.width - 10, clientX - rect.left));
+  const y = Math.max(10, Math.min(rect.height - 10, clientY - rect.top));
+  arrow.style.left = `${x}px`;
+  arrow.style.top = `${y}px`;
   blockEl.classList.add("is-hovering");
 }
 
@@ -333,7 +344,7 @@ function bindUploads() {
     if (piece.dataset.locked === "true") return;
     const blockEl = piece.closest(".block");
     if (!blockEl) return;
-    showArrow(blockEl);
+    showArrow(blockEl, e.clientX, e.clientY);
   });
 
   document.addEventListener("pointermove", (e) => {
@@ -342,7 +353,7 @@ function bindUploads() {
     if (piece.dataset.locked === "true") return;
     const blockEl = piece.closest(".block");
     if (!blockEl) return;
-    showArrow(blockEl);
+    showArrow(blockEl, e.clientX, e.clientY);
   });
 
   document.addEventListener("pointerout", (e) => {
@@ -404,8 +415,16 @@ function bindUploads() {
   });
 }
 
-render();
-bindFactsPopup();
-bindUploads();
-maybeLoadExistingImages();
+loadBlocksFromSVG()
+  .then((blocks) => {
+    BLOCKS = blocks;
+    render();
+    bindFactsPopup();
+    bindUploads();
+    maybeLoadExistingImages();
+  })
+  .catch((err) => {
+    console.error("Failed to load quilt SVG", err);
+    document.getElementById("quilt").innerHTML = "<p>Quilt failed to load.</p>";
+  });
 
