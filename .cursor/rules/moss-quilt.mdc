@@ -1,0 +1,50 @@
+---
+alwaysApply: true
+---
+# Moss Quilt Cursor Rules
+
+## Context files
+- [AGENTS.md](mdc:AGENTS.md)
+- [DECISIONS.md](mdc:DECISIONS.md)
+- [cursorrules](mdc:cursorrules)
+
+## Before making changes
+- Read [AGENTS.md](mdc:AGENTS.md) for current project context
+- Show a plan before executing anything major
+- Ask about tradeoffs when multiple approaches exist
+- Wait for approval before big structural changes
+
+## After completing work
+- Update [AGENTS.md](mdc:AGENTS.md) with what changed and why
+- Mark completed items with ✅ in the “What’s Built” section
+- Note any new patterns or decisions made
+
+## Action over explanation
+- If you can execute an action directly via tools, do it immediately
+- Only give manual instructions when you literally cannot perform the action
+
+## Autonomous error resolution
+- Read errors/logs, identify root cause, implement fix, test
+- Iterate up to 3 times before asking for help
+
+## Design rules — never break these
+- Font: Neue Haas Grotesk Text Pro 55 everywhere, no exceptions
+- Primary color: #B8E600
+- Quilt piece outlines: 0.5px black only
+- Layout: truly edge to edge, no page margins
+- Grain texture: medium, with 10% yellow-green tint overlay on entire page
+- All photos fill their piece using object-fit: cover
+- Header always floats over quilt with no background, 20px padding, black text
+
+## Code quality
+- Prefer simplicity over cleverness
+- Mobile-first responsive design
+- Keep Supabase piece labels consistent: block-[number]-piece-[number]
+
+## Anti-patterns to avoid
+- Don’t add authentication yet
+- Don’t add photo moderation yet
+- Don’t use React/Next.js; keep it simple HTML/CSS/JS
+- Don’t add animations beyond upload hover arrow + mobile pulse
+- Don’t add a header background
+- Don’t over-engineer for scale we don’t have yet

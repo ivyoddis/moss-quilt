@@ -1,0 +1,61 @@
+# Project: Moss Quilt
+# Stack: HTML, CSS, JavaScript, Supabase storage, Vercel
+
+## Before Making Changes
+- Read AGENTS.md for current project context
+- Show me your plan before executing anything major
+- Ask about tradeoffs when multiple approaches exist
+- Wait for my approval before big structural changes
+
+## After Completing Work
+- Update AGENTS.md with what changed and why
+- Mark completed items with ✅ in the What's Built section
+- Note any new patterns or decisions made
+
+## Action Over Explanation
+When you have access to tools via MCP or other integrations, ALWAYS use them directly instead of giving me instructions. If you can execute an action yourself, do it immediately. Never say "go to X and do Y" — just do it yourself. Only give me manual instructions when you literally cannot perform the action.
+
+## Autonomous Error Resolution
+When you encounter an error after attempting a solution:
+1. DO NOT wait for me to copy-paste errors or ask you to fix them
+2. Automatically read error messages, logs, or console output
+3. Analyze the root cause
+4. Implement a fix
+5. Test the fix
+6. If still broken, iterate autonomously up to 3 times
+7. Only stop to ask if you've tried 3 approaches without success
+Default mode: keep going until it works. Don't ask permission to debug.
+
+## Design Rules — Never Break These
+- Font: Neue Haas Grotesk Text Pro 55 everywhere, no exceptions
+- Primary color: #B8E600
+- Quilt piece outlines: 0.5px black only
+- Layout: truly edge to edge, no page margins
+- Grain texture: medium, with 10% yellow-green tint overlay on entire page
+- All photos fill their piece using object-fit: cover
+- Header always floats over quilt with no background, 20px padding, black text
+
+## Code Quality
+- Prefer simplicity over cleverness
+- Comment only when code isn't self-explanatory
+- Mobile-first responsive design
+- Keep Supabase piece labels consistent: block-[number]-piece-[number]
+
+## Communication Style
+- Direct and concise
+- Show code first, explain only when I ask
+- Default to action, not explanation
+
+## Project Context
+- Current phase: MVP v1 — initial build
+- Audience: Coworkers in the PNW
+- Goal: Get quilt rendering and uploads working, then share
+
+## Anti-Patterns to Avoid
+- Don't add authentication — not needed yet
+- Don't add photo moderation — not needed yet
+- Don't use React or Next.js — keeping it simple HTML/CSS/JS
+- Don't add animations beyond the upload hover arrow and mobile pulse
+- Don't add a header background — it must float over the quilt
+- Don't over-engineer for scale we don't have yet
+
