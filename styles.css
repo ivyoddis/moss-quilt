@@ -1,0 +1,222 @@
+:root {
+  --primary: #b8e600;
+  --ink: #000;
+  --line: 0.5px;
+  /* Thin header, generous sides — proportions similar to themadeshop.com (inspected: ~14px vertical, ~56px horizontal) */
+  --header-pad-v: 14px;
+  --header-pad-h: 56px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--primary);
+  color: var(--ink);
+  font-family: "Neue Haas Grotesk Text Pro 55", "Neue Haas Grotesk Text Pro", "Helvetica Neue", Helvetica, Arial,
+    system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Thin white header bar, fixed top — themadeshop.com-style proportions */
+.header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: flex-end;
+  gap: 12px;
+  padding: var(--header-pad-v) var(--header-pad-h);
+  background: #fff;
+  color: var(--ink);
+  user-select: none;
+}
+
+.page {
+  width: 100%;
+  padding: calc(var(--header-pad-v) * 2 + 1em) var(--header-pad-h) 0;
+  min-height: 100vh;
+}
+
+.header__left {
+  justify-self: start;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+}
+
+.header__center {
+  justify-self: center;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  text-align: center;
+  max-width: min(720px, 72vw);
+}
+
+.header__right {
+  justify-self: end;
+  border: none;
+  background: none;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1;
+  padding: 0;
+}
+
+.header__right:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* 2 columns, 3 rows, fixed quilt width, scrollable — blocks stack vertically */
+.quilt {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 50vh 50vh 50vh;
+  width: 960px;
+  max-width: 960px;
+  gap: 0;
+}
+
+.block {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  overflow: hidden;
+}
+
+.block svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.piece {
+  cursor: pointer;
+}
+
+.piece-outline {
+  stroke: var(--ink);
+  stroke-width: 0.5;
+  vector-effect: non-scaling-stroke;
+  fill: none;
+}
+
+.piece-shape {
+  fill: transparent;
+}
+
+.piece-image {
+  opacity: 0;
+  transition: opacity 280ms ease;
+}
+
+.piece-image.is-visible {
+  opacity: 1;
+}
+
+.upload-arrow {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 120ms ease;
+  z-index: 5;
+}
+
+.upload-arrow::before {
+  content: "↑";
+  font-size: 14px;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .block.is-hovering .upload-arrow {
+    opacity: 1;
+  }
+}
+
+@media (pointer: coarse) {
+  .piece-shape {
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.78;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.file-picker {
+  position: fixed;
+  inset: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Facts popup */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  z-index: 150;
+}
+
+.facts {
+  border: var(--line) solid var(--ink);
+  padding: 0;
+  background: var(--primary);
+  color: var(--ink);
+  max-width: min(520px, calc(100vw - 40px));
+  border-radius: 12px;
+  z-index: 200;
+}
+
+.facts::backdrop {
+  background: transparent;
+}
+
+.facts__content {
+  padding: 18px;
+}
+
+.facts__title {
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  margin-bottom: 10px;
+}
+
+.facts__text {
+  font-size: 14px;
+  line-height: 1.35;
+}

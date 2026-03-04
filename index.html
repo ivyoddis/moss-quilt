@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Moss Quilt</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="header" aria-label="Moss Quilt header">
+      <div class="header__left">A Collective Moss Quilt</div>
+      <div class="header__center">Walk slow, touch moss, upload a photo</div>
+      <button class="header__right" id="factsButton" type="button" aria-haspopup="dialog" aria-expanded="false">
+        +
+      </button>
+    </header>
+
+    <main class="page">
+      <section class="quilt" id="quilt" aria-label="Moss Quilt grid"></section>
+    </main>
+
+    <input id="filePicker" class="file-picker" type="file" accept="image/*" />
+
+    <div class="modal-backdrop" id="factsBackdrop" hidden></div>
+    <dialog class="facts" id="factsDialog" aria-label="Moss facts">
+      <div class="facts__content">
+        <div class="facts__title">Moss facts</div>
+        <div class="facts__text">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
+          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+          commodo consequat.
+        </div>
+      </div>
+    </dialog>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
