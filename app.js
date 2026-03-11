@@ -141,20 +141,18 @@ function parsePathVertices(d) {
   return pts;
 }
 
-/** Geometric centroid of shape in SVG user coords (uses getBBox for transforms). */
-function shapeCentroid(el) {
-  const b = el.getBBox();
-  return { x: b.x + b.width / 2, y: b.y + b.height / 2 };
-}
-
-function centroidToViewport(svg, el, cx, cy) {
+/** Piece centroid in SVG coords from getBBox; then transform to screen using svg.getScreenCTM(). */
+function pieceCentroidToScreen(svg, element) {
+  const b = element.getBBox();
+  const cx = b.x + b.width / 2;
+  const cy = b.y + b.height / 2;
   const pt = svg.createSVGPoint();
   pt.x = cx;
   pt.y = cy;
-  const ctm = el.getScreenCTM();
+  const ctm = svg.getScreenCTM();
   if (!ctm) return null;
-  const p = pt.matrixTransform(ctm);
-  return { x: p.x, y: p.y };
+  const screenPt = pt.matrixTransform(ctm);
+  return { x: screenPt.x, y: screenPt.y };
 }
 
 function cellIndex(cx, cy) {
@@ -198,7 +196,9 @@ function initQuiltPieces(svg) {
 
   const byCell = Array.from({ length: 6 }, () => []);
   for (const el of shapes) {
-    const { x: cx, y: cy } = shapeCentroid(el);
+    const b = el.getBBox();
+    const cx = b.x + b.width / 2;
+    const cy = b.y + b.height / 2;
     const idx = cellIndex(cx, cy);
     byCell[idx].push({ el, cx, cy });
   }
@@ -407,12 +407,11 @@ function bindUploads(svg, elToMeta, byId, uploadedPieces) {
   }
 
   function showIconAt(meta) {
-    const { x, y } = shapeCentroid(meta.originalEl);
-    const vp = centroidToViewport(svg, meta.originalEl, x, y);
-    if (!vp || !hoverArrow) return;
+    const screenPt = pieceCentroidToScreen(svg, meta.originalEl);
+    if (!screenPt || !hoverArrow) return;
     hoverArrow.hidden = false;
-    hoverArrow.style.left = vp.x + "px";
-    hoverArrow.style.top = vp.y + "px";
+    hoverArrow.style.left = screenPt.x + "px";
+    hoverArrow.style.top = screenPt.y + "px";
     hoverArrow.style.transform = "translate(-50%, -50%)";
   }
 
@@ -423,11 +422,10 @@ function bindUploads(svg, elToMeta, byId, uploadedPieces) {
     if (meta.city_state) lines.push(meta.city_state);
     piecePopup.textContent = lines.length ? lines.join("\n") : "No location added.";
     piecePopup.classList.add("is-visible");
-    const { x, y } = shapeCentroid(meta.originalEl);
-    const vp = centroidToViewport(svg, meta.originalEl, x, y);
-    if (vp) {
-      piecePopup.style.left = (vp.x - 245 / 2) + "px";
-      piecePopup.style.top = (vp.y - 125 / 2) + "px";
+    const screenPt = pieceCentroidToScreen(svg, meta.originalEl);
+    if (screenPt) {
+      piecePopup.style.left = (screenPt.x - 245 / 2) + "px";
+      piecePopup.style.top = (screenPt.y - 125 / 2) + "px";
     }
   }
 
@@ -537,8 +535,7 @@ function bindUploads(svg, elToMeta, byId, uploadedPieces) {
   });
 }
 
-const quiltEl = $("#quilt");
-const svg = quiltEl?.querySelector("svg");
+const svg = document.getElementById("quiltSvg");
 if (svg) {
   const { elToMeta, byId } = initQuiltPieces(svg);
   window.__quiltPieceCount = byId.size;

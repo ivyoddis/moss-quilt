@@ -27,16 +27,12 @@ body {
   overflow-y: auto;
 }
 
-/* Header: #B8E600 bar, 12.825px margins, 12px padding */
+/* Header: #B8E600 bar; top padding +7px, bottom -19px; inner aligns to quilt edges */
 .header {
   position: fixed;
   inset: 0 0 auto 0;
   z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px var(--margin);
+  padding: 19px 0 0;
   width: 100%;
   max-width: 100%;
   left: 0;
@@ -45,6 +41,17 @@ body {
   background: #B8E600;
   color: var(--ink);
   user-select: none;
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-left: var(--margin);
+  margin-right: var(--margin);
+  width: calc(100% - 2 * var(--margin));
+  box-sizing: border-box;
 }
 
 .header__left {
@@ -77,21 +84,15 @@ body {
   overflow: hidden;
 }
 
-.ticker-track {
-  display: inline-flex;
-  align-items: center;
+.ticker-text {
+  display: inline-block;
   white-space: nowrap;
-  padding-right: 2em;
   animation: ticker 28s cubic-bezier(0.42, 0, 0.58, 1) infinite;
 }
 
-.ticker-text {
-  display: inline;
-}
-
 @keyframes ticker {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
 }
 
 .header__right {
@@ -116,9 +117,9 @@ button:active,
   box-shadow: none;
 }
 
-/* Page: gap 8px below header */
+/* Page: gap below header (header padding 19px top, 0 bottom; 8px gap to quilt) */
 .page {
-  padding-top: calc(12px + 12px + 1em + 8px);
+  padding-top: calc(19px + 1em + 8px);
   min-height: 100vh;
 }
 
