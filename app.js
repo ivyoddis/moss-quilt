@@ -174,20 +174,22 @@ function setPieceImage(meta, url) {
 function initQuiltPieces(svg) {
   const defs = svg.querySelector("defs") || svg.insertBefore(svgEl("defs"), svg.firstChild);
   const hitLayer = svgEl("g", { "class": "piece-hit-layer" });
+  const iconLayer = svgEl("g", { "class": "piece-upload-icon-layer" });
   svg.appendChild(hitLayer);
+  svg.appendChild(iconLayer);
 
-  // Only closed shapes (rect, polygon) are upload pieces. Stroke-only elements (line, path outlines) are excluded.
+  // Closed shapes (rect, polygon, path with fill) are upload pieces. Stroke-only (line, polyline) excluded.
   const shapes = [];
   const walk = (el) => {
     if (!el) return;
     const tag = el.tagName?.toLowerCase();
-    if (tag === "line") return; // stroke-only outline, not a piece
+    if (tag === "line" || tag === "polyline") return;
     if (tag === "rect") {
       const w = parseFloat(el.getAttribute("width")) || 0;
       const h = parseFloat(el.getAttribute("height")) || 0;
-      if (w > 600 && h > 600) return; // frame/background rect, not a piece
+      if (w > 600 && h > 600) return;
       shapes.push(el);
-    } else if (tag === "polygon") {
+    } else if (tag === "polygon" || tag === "path") {
       shapes.push(el);
     }
     if (el.children) for (const c of el.children) walk(c);
@@ -240,11 +242,28 @@ function initQuiltPieces(svg) {
       hit.setAttribute("data-piece-id", id);
       hitLayer.appendChild(hit);
 
+      const b = el.getBBox();
+      const iconCx = b.x + b.width / 2;
+      const iconCy = b.y + b.height / 2;
+      const iconG = svgEl("g", {
+        "class": "piece-upload-icon",
+        "data-piece-id": id,
+        "clip-path": `url(#${clipId})`,
+        "transform": `translate(${iconCx},${iconCy})`,
+        "visibility": "hidden",
+      });
+      iconG.appendChild(svgEl("circle", { r: "40", fill: "#B8E600", stroke: "#1E1E1E", "stroke-width": "1" }));
+      iconG.appendChild(svgEl("line", { x1: "0", y1: "20", x2: "0", y2: "-20", stroke: "#1E1E1E", "stroke-width": "1" }));
+      iconG.appendChild(svgEl("line", { x1: "0", y1: "-20", x2: "-12", y2: "8", stroke: "#1E1E1E", "stroke-width": "1" }));
+      iconG.appendChild(svgEl("line", { x1: "0", y1: "-20", x2: "12", y2: "8", stroke: "#1E1E1E", "stroke-width": "1" }));
+      iconLayer.appendChild(iconG);
+
       const meta = {
         id,
         el: hit,
         imageEl,
         originalEl: el,
+        iconEl: iconG,
         location_description: null,
         city_state: null,
       };
@@ -406,7 +425,14 @@ function bindUploads(svg, elToMeta, byId, uploadedPieces) {
 
   const metadataDialog = bindMetadataDialog(byId, () => { showLoading(false); });
 
+  function hideAllPieceIcons() {
+    svg.querySelectorAll(".piece-upload-icon").forEach((g) => {
+      g.setAttribute("visibility", "hidden");
+    });
+  }
+
   function hideHover() {
+    hideAllPieceIcons();
     if (hoverArrow) {
       hoverArrow.hidden = true;
       hoverArrow.style.left = "-9999px";
@@ -419,12 +445,9 @@ function bindUploads(svg, elToMeta, byId, uploadedPieces) {
   }
 
   function showIconAt(meta) {
-    const screenPt = pieceCentroidToScreen(svg, meta.originalEl);
-    if (!screenPt || !hoverArrow) return;
-    hoverArrow.hidden = false;
-    hoverArrow.style.left = screenPt.x + "px";
-    hoverArrow.style.top = screenPt.y + "px";
-    hoverArrow.style.transform = "translate(-50%, -50%)";
+    if (!meta || !meta.iconEl) return;
+    hideAllPieceIcons();
+    meta.iconEl.setAttribute("visibility", "visible");
   }
 
   function showLocationPopup(meta) {
@@ -447,7 +470,7 @@ function bindUploads(svg, elToMeta, byId, uploadedPieces) {
     const meta = findPieceAtPoint(byId, svgPt);
     if (!meta) return hideHover();
     if (uploadedPieces.has(meta.id)) {
-      if (hoverArrow) hoverArrow.hidden = true;
+      hideAllPieceIcons();
       showLocationPopup(meta);
     } else {
       piecePopup.classList.remove("is-visible");

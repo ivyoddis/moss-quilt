@@ -163,6 +163,10 @@ button:active,
   opacity: 1;
 }
 
+.piece-upload-icon-layer {
+  pointer-events: none;
+}
+
 /* Upload icon: transparent background */
 .hover-arrow {
   position: fixed;
