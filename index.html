@@ -4,34 +4,152 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Moss Quilt</title>
+    <link rel="stylesheet" href="https://use.typekit.net/tbm6feu.css" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <header class="header" aria-label="Moss Quilt header">
       <div class="header__left">A Collective Moss Quilt</div>
-      <div class="header__center">Walk slow, touch moss, upload a photo</div>
-      <button class="header__right" id="factsButton" type="button" aria-haspopup="dialog" aria-expanded="false">
-        +
-      </button>
+      <div class="header__center header__center--ticker">
+        <div class="ticker-wrap">
+          <span class="ticker-text">Slow down, touch moss, upload a photo.</span>
+          <span class="ticker-space">  </span>
+          <svg class="ticker-smiley" viewBox="0 0 24 24" width="1em" height="1em" fill="#B8E600" stroke="#1E1E1E" stroke-width="1" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" fill="#B8E600" stroke="#1E1E1E" stroke-width="1"/>
+            <circle cx="8" cy="10" r="1.5" fill="#1E1E1E" stroke="#1E1E1E" stroke-width="0.5"/>
+            <circle cx="16" cy="10" r="1.5" fill="#1E1E1E" stroke="#1E1E1E" stroke-width="0.5"/>
+            <path d="M8 15 Q12 19 16 15" fill="none" stroke="#1E1E1E" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="ticker-wrap" aria-hidden="true">
+          <span class="ticker-text">Slow down, touch moss, upload a photo.</span>
+          <span class="ticker-space">  </span>
+          <svg class="ticker-smiley" viewBox="0 0 24 24" width="1em" height="1em" fill="#B8E600" stroke="#1E1E1E" stroke-width="1" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" fill="#B8E600" stroke="#1E1E1E" stroke-width="1"/>
+            <circle cx="8" cy="10" r="1.5" fill="#1E1E1E" stroke="#1E1E1E" stroke-width="0.5"/>
+            <circle cx="16" cy="10" r="1.5" fill="#1E1E1E" stroke="#1E1E1E" stroke-width="0.5"/>
+            <path d="M8 15 Q12 19 16 15" fill="none" stroke="#1E1E1E" stroke-width="1"/>
+          </svg>
+        </div>
+      </div>
+      <button class="header__right" id="factsButton" type="button" aria-haspopup="dialog" aria-expanded="false">+</button>
     </header>
 
     <main class="page">
-      <section class="quilt" id="quilt" aria-label="Moss Quilt grid"></section>
+      <div class="quilt" id="quilt" aria-label="Moss Quilt grid">
+        <svg id="quiltSvg" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1440 1439.22">
+          <defs>
+            <style>.st0,.st1{fill:none;stroke:#1e1e1e;stroke-miterlimit:10}.st1{stroke-width:1px}</style>
+          </defs>
+          <rect class="st0" x="32.87" y="32.47" width="76.35" height="610.79"/>
+          <rect class="st0" x="109.22" y="32.47" width="610.79" height="76.35"/>
+          <polygon class="st0" points="567.31 490.56 567.31 566.91 109.22 566.91 109.22 108.82 185.56 108.82 185.56 490.56 567.31 490.56"/>
+          <rect class="st0" x="185.56" y="108.82" width="458.09" height="76.35"/>
+          <rect class="st0" x="185.56" y="185.17" width="76.35" height="305.39"/>
+          <rect class="st0" x="261.91" y="185.17" width="305.4" height="76.35"/>
+          <rect class="st0" x="338.25" y="261.52" width="152.71" height="76.35"/>
+          <rect class="st0" x="261.91" y="261.52" width="76.35" height="152.7"/>
+          <rect class="st0" x="490.96" y="261.52" width="76.35" height="229.05"/>
+          <rect class="st0" x="414.6" y="337.86" width="76.36" height="76.35"/>
+          <rect class="st0" x="338.25" y="337.86" width="76.35" height="76.35"/>
+          <rect class="st0" x="261.91" y="414.21" width="229.05" height="76.35"/>
+          <rect class="st0" x="567.31" y="185.17" width="76.35" height="381.74"/>
+          <rect class="st0" x="643.66" y="108.82" width="76.35" height="534.44"/>
+          <rect class="st0" x="109.22" y="566.91" width="534.44" height="76.35"/>
+          <rect class="st0" x="32.87" y="643.26" width="687.14" height="76.88"/>
+          <g>
+            <rect class="st1" x="753.76" y="753.67" width="161.83" height="161.83" transform="translate(-345.67 834.65) rotate(-45)"/>
+            <rect class="st1" x="982.62" y="753.67" width="161.83" height="161.83" transform="translate(-278.64 996.47) rotate(-45)"/>
+            <rect class="st1" x="1211.48" y="753.67" width="161.83" height="161.83" transform="translate(-211.6 1158.3) rotate(-45)"/>
+            <rect class="st1" x="753.76" y="982.52" width="161.83" height="161.83" transform="translate(-507.49 901.68) rotate(-45)"/>
+            <rect class="st1" x="982.62" y="982.52" width="161.83" height="161.83" transform="translate(-440.46 1063.51) rotate(-45)"/>
+            <rect class="st1" x="1211.48" y="982.52" width="161.83" height="161.83" transform="translate(-373.43 1225.33) rotate(-45)"/>
+            <rect class="st1" x="753.76" y="1211.38" width="161.83" height="161.83" transform="translate(-669.32 968.71) rotate(-45)"/>
+            <rect class="st1" x="982.62" y="1211.38" width="161.83" height="161.83" transform="translate(-602.29 1130.54) rotate(-45)"/>
+            <rect class="st1" x="1211.48" y="1211.38" width="161.83" height="161.83" transform="translate(-535.26 1292.37) rotate(-45)"/>
+          </g>
+          <rect class="st0" x="720.22" y="720.13" width="686.61" height="686.61"/>
+          <g>
+            <rect class="st0" x="720" y="33" width="229.05" height="229.05"/>
+            <rect class="st0" x="949.05" y="33" width="229.05" height="229.05"/>
+            <rect class="st0" x="1178.1" y="33" width="229.05" height="229.05"/>
+            <rect class="st0" x="720" y="262.04" width="229.05" height="229.05"/>
+            <rect class="st0" x="949.05" y="262.04" width="229.05" height="229.05"/>
+            <rect class="st0" x="1178.1" y="262.04" width="229.05" height="229.05"/>
+            <rect class="st0" x="720" y="491.09" width="229.05" height="229.05"/>
+            <rect class="st0" x="949.05" y="491.09" width="229.05" height="229.05"/>
+            <rect class="st0" x="1178.1" y="491.09" width="229.05" height="229.05"/>
+            <line class="st0" x1="720" y1="491.09" x2="1178.1" y2="33"/>
+            <line class="st0" x1="949.05" y1="720.13" x2="1407.14" y2="262.04"/>
+            <line class="st0" x1="1178.1" y1="720.13" x2="720" y2="262.04"/>
+            <line class="st0" x1="1407.14" y1="491.09" x2="949.05" y2="33"/>
+          </g>
+          <g>
+            <rect class="st0" x="33.4" y="720.15" width="686.61" height="686.61"/>
+            <g>
+              <polygon class="st0" points="33.4 891.85 205.07 720.15 376.75 891.85 33.4 891.85"/>
+              <polygon class="st0" points="33.4 1063.45 205.07 891.76 376.75 1063.45 33.4 1063.45"/>
+              <polygon class="st0" points="548.33 720.15 720 891.85 548.33 1063.55 548.33 720.15"/>
+              <polygon class="st0" points="376.75 720.15 548.42 891.85 376.75 1063.55 376.75 720.15"/>
+              <polygon class="st0" points="720 1235.06 548.33 1406.76 376.65 1235.06 720 1235.06"/>
+              <polygon class="st0" points="720 1063.45 548.33 1235.15 376.65 1063.45 720 1063.45"/>
+              <polygon class="st0" points="205.07 1406.76 33.4 1235.06 205.07 1063.36 205.07 1406.76"/>
+              <polygon class="st0" points="376.65 1406.76 204.98 1235.06 376.65 1063.36 376.65 1406.76"/>
+            </g>
+          </g>
+        </svg>
+      </div>
     </main>
 
     <input id="filePicker" class="file-picker" type="file" accept="image/*" />
 
+    <div class="hover-arrow" id="hoverArrow" hidden aria-hidden="true">
+      <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="30" cy="30" r="28" fill="#B8E600" stroke="#1E1E1E" stroke-width="1"/>
+        <line x1="30" y1="43" x2="30" y2="17" stroke="#1E1E1E" stroke-width="1"/>
+        <line x1="30" y1="17" x2="19" y2="28" stroke="#1E1E1E" stroke-width="1"/>
+        <line x1="30" y1="17" x2="41" y2="28" stroke="#1E1E1E" stroke-width="1"/>
+      </svg>
+    </div>
+
+    <div class="piece-hover-popup" id="pieceHoverPopup" aria-hidden="true"></div>
+
     <div class="modal-backdrop" id="factsBackdrop" hidden></div>
     <dialog class="facts" id="factsDialog" aria-label="Moss facts">
       <div class="facts__content">
-        <div class="facts__title">Moss facts</div>
+        <div class="facts__title">What is a collective moss quilt?</div>
         <div class="facts__text">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-          commodo consequat.
+
+A Collective Moss Quilt is a living archive of slow walks and small discoveries. Every piece of this quilt was uploaded by someone who stopped, looked down, and touched the moss. Together these moments become something larger — proof that softness and slowness still exist.
+
+Moss facts:
+
++ Moss has no roots. It attaches itself gently to whatever surface it finds and holds on slowly, over time.
+
++ Moss doesn't compete. It simply finds a forgotten corner and makes something beautiful there.
+
++ A single square inch of moss can contain hundreds of microscopic creatures living entire lives you'll never see.
+
++ Moss is a sign of clean air. Where moss thrives, the world is a little healthier.
         </div>
       </div>
     </dialog>
+
+    <dialog class="metadata-dialog" id="metadataDialog" aria-label="Add location">
+      <form class="metadata-form" id="metadataForm">
+        <label class="metadata-label">Describe where you found it</label>
+        <input type="text" class="metadata-input" name="location" placeholder="3rd step, main entrance, Tabor Park" maxlength="40" />
+        <label class="metadata-label">City, State</label>
+        <input type="text" class="metadata-input" name="city_state" placeholder="Portland, OR" maxlength="40" />
+        <div class="metadata-actions">
+          <button type="button" class="metadata-skip" id="metadataSkip">Skip</button>
+          <button type="submit" class="metadata-submit">Save</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="upload-loading" id="uploadLoading" hidden aria-live="polite">Uploading…</div>
+    <div class="upload-error" id="uploadError" hidden aria-live="assertive"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="./app.js"></script>
