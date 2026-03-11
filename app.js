@@ -178,14 +178,16 @@ function initQuiltPieces(svg) {
   const hitLayer = svgEl("g", { "class": "piece-hit-layer" });
   svg.appendChild(hitLayer);
 
+  // Only closed shapes (rect, polygon) are upload pieces. Stroke-only elements (line, path outlines) are excluded.
   const shapes = [];
   const walk = (el) => {
     if (!el) return;
     const tag = el.tagName?.toLowerCase();
+    if (tag === "line") return; // stroke-only outline, not a piece
     if (tag === "rect") {
       const w = parseFloat(el.getAttribute("width")) || 0;
       const h = parseFloat(el.getAttribute("height")) || 0;
-      if (w > 600 && h > 600) return;
+      if (w > 600 && h > 600) return; // frame/background rect, not a piece
       shapes.push(el);
     } else if (tag === "polygon") {
       shapes.push(el);
@@ -251,6 +253,7 @@ function initQuiltPieces(svg) {
     });
   }
 
+  console.log("Upload pieces registered:", byId.size);
   return { elToMeta, byId };
 }
 
@@ -538,6 +541,7 @@ const quiltEl = $("#quilt");
 const svg = quiltEl?.querySelector("svg");
 if (svg) {
   const { elToMeta, byId } = initQuiltPieces(svg);
+  window.__quiltPieceCount = byId.size;
   bindFactsPopup();
   (async () => {
     const uploadedPieces = await fetchUploadedPieces();
