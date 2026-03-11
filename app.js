@@ -376,6 +376,27 @@ function bindMetadataDialog(byId, onClose) {
   };
 }
 
+/** Mouse position (clientX, clientY) to SVG coordinate point. */
+function mouseToSvgPoint(svg, clientX, clientY) {
+  const pt = svg.createSVGPoint();
+  pt.x = clientX;
+  pt.y = clientY;
+  const ctm = svg.getScreenCTM();
+  if (!ctm || !ctm.inverse) return null;
+  return pt.matrixTransform(ctm.inverse());
+}
+
+/** First registered piece that contains the given SVG point (isPointInFill). */
+function findPieceAtPoint(byId, svgPt) {
+  if (!svgPt) return null;
+  for (const meta of byId.values()) {
+    try {
+      if (meta.originalEl.isPointInFill(svgPt)) return meta;
+    } catch (_) {}
+  }
+  return null;
+}
+
 function bindUploads(svg, elToMeta, byId, uploadedPieces) {
   const picker = $("#filePicker");
   const hoverArrow = $("#hoverArrow");
@@ -384,15 +405,6 @@ function bindUploads(svg, elToMeta, byId, uploadedPieces) {
   let uploading = false;
 
   const metadataDialog = bindMetadataDialog(byId, () => { showLoading(false); });
-
-  function findMeta(target) {
-    let t = target;
-    while (t && t !== svg) {
-      if (elToMeta.has(t)) return elToMeta.get(t);
-      t = t.parentNode;
-    }
-    return null;
-  }
 
   function hideHover() {
     if (hoverArrow) {
@@ -429,9 +441,10 @@ function bindUploads(svg, elToMeta, byId, uploadedPieces) {
     }
   }
 
-  svg.addEventListener("pointermove", (e) => {
+  svg.addEventListener("mousemove", (e) => {
     if (uploading) return hideHover();
-    const meta = findMeta(e.target);
+    const svgPt = mouseToSvgPoint(svg, e.clientX, e.clientY);
+    const meta = findPieceAtPoint(byId, svgPt);
     if (!meta) return hideHover();
     if (uploadedPieces.has(meta.id)) {
       if (hoverArrow) hoverArrow.hidden = true;
@@ -443,11 +456,12 @@ function bindUploads(svg, elToMeta, byId, uploadedPieces) {
     }
   });
 
-  svg.addEventListener("pointerleave", hideHover);
+  svg.addEventListener("mouseleave", hideHover);
 
   svg.addEventListener("click", (e) => {
     if (uploading) return;
-    const meta = findMeta(e.target);
+    const svgPt = mouseToSvgPoint(svg, e.clientX, e.clientY);
+    const meta = findPieceAtPoint(byId, svgPt);
     if (!meta || uploadedPieces.has(meta.id)) return;
     currentId = meta.id;
     picker.value = "";
