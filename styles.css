@@ -87,12 +87,6 @@ body {
 .ticker-text {
   display: inline-block;
   white-space: nowrap;
-  animation: ticker 28s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-}
-
-@keyframes ticker {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
 }
 
 .header__right {
@@ -161,10 +155,6 @@ button:active,
 
 .piece-image.is-visible {
   opacity: 1;
-}
-
-.piece-upload-icon-layer {
-  pointer-events: none;
 }
 
 /* Upload icon: transparent background */

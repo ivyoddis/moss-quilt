@@ -174,9 +174,7 @@ function setPieceImage(meta, url) {
 function initQuiltPieces(svg) {
   const defs = svg.querySelector("defs") || svg.insertBefore(svgEl("defs"), svg.firstChild);
   const hitLayer = svgEl("g", { "class": "piece-hit-layer" });
-  const iconLayer = svgEl("g", { "class": "piece-upload-icon-layer" });
   svg.appendChild(hitLayer);
-  svg.appendChild(iconLayer);
 
   // Closed shapes (rect, polygon, path with fill) are upload pieces. Stroke-only (line, polyline) excluded.
   const shapes = [];
@@ -242,28 +240,11 @@ function initQuiltPieces(svg) {
       hit.setAttribute("data-piece-id", id);
       hitLayer.appendChild(hit);
 
-      const b = el.getBBox();
-      const iconCx = b.x + b.width / 2;
-      const iconCy = b.y + b.height / 2;
-      const iconG = svgEl("g", {
-        "class": "piece-upload-icon",
-        "data-piece-id": id,
-        "clip-path": `url(#${clipId})`,
-        "transform": `translate(${iconCx},${iconCy})`,
-        "visibility": "hidden",
-      });
-      iconG.appendChild(svgEl("circle", { r: "40", fill: "#B8E600", stroke: "#1E1E1E", "stroke-width": "1" }));
-      iconG.appendChild(svgEl("line", { x1: "0", y1: "20", x2: "0", y2: "-20", stroke: "#1E1E1E", "stroke-width": "1" }));
-      iconG.appendChild(svgEl("line", { x1: "0", y1: "-20", x2: "-12", y2: "8", stroke: "#1E1E1E", "stroke-width": "1" }));
-      iconG.appendChild(svgEl("line", { x1: "0", y1: "-20", x2: "12", y2: "8", stroke: "#1E1E1E", "stroke-width": "1" }));
-      iconLayer.appendChild(iconG);
-
       const meta = {
         id,
         el: hit,
         imageEl,
         originalEl: el,
-        iconEl: iconG,
         location_description: null,
         city_state: null,
       };
@@ -395,27 +376,6 @@ function bindMetadataDialog(byId, onClose) {
   };
 }
 
-/** Mouse position (clientX, clientY) to SVG coordinate point. */
-function mouseToSvgPoint(svg, clientX, clientY) {
-  const pt = svg.createSVGPoint();
-  pt.x = clientX;
-  pt.y = clientY;
-  const ctm = svg.getScreenCTM();
-  if (!ctm || !ctm.inverse) return null;
-  return pt.matrixTransform(ctm.inverse());
-}
-
-/** First registered piece that contains the given SVG point (isPointInFill). */
-function findPieceAtPoint(byId, svgPt) {
-  if (!svgPt) return null;
-  for (const meta of byId.values()) {
-    try {
-      if (meta.originalEl.isPointInFill(svgPt)) return meta;
-    } catch (_) {}
-  }
-  return null;
-}
-
 function bindUploads(svg, elToMeta, byId, uploadedPieces) {
   const picker = $("#filePicker");
   const hoverArrow = $("#hoverArrow");
@@ -425,14 +385,7 @@ function bindUploads(svg, elToMeta, byId, uploadedPieces) {
 
   const metadataDialog = bindMetadataDialog(byId, () => { showLoading(false); });
 
-  function hideAllPieceIcons() {
-    svg.querySelectorAll(".piece-upload-icon").forEach((g) => {
-      g.setAttribute("visibility", "hidden");
-    });
-  }
-
   function hideHover() {
-    hideAllPieceIcons();
     if (hoverArrow) {
       hoverArrow.hidden = true;
       hoverArrow.style.left = "-9999px";
@@ -445,9 +398,19 @@ function bindUploads(svg, elToMeta, byId, uploadedPieces) {
   }
 
   function showIconAt(meta) {
-    if (!meta || !meta.iconEl) return;
-    hideAllPieceIcons();
-    meta.iconEl.setAttribute("visibility", "visible");
+    if (!meta || !hoverArrow) return;
+    const bbox = meta.originalEl.getBBox();
+    const cx = bbox.x + bbox.width / 2;
+    const cy = bbox.y + bbox.height / 2;
+    const centerPt = svg.createSVGPoint();
+    centerPt.x = cx;
+    centerPt.y = cy;
+    const screenPt = centerPt.matrixTransform(svg.getScreenCTM());
+    hoverArrow.hidden = false;
+    hoverArrow.style.position = "fixed";
+    hoverArrow.style.left = screenPt.x + "px";
+    hoverArrow.style.top = screenPt.y + "px";
+    hoverArrow.style.transform = "translate(-50%, -50%)";
   }
 
   function showLocationPopup(meta) {
@@ -466,11 +429,22 @@ function bindUploads(svg, elToMeta, byId, uploadedPieces) {
 
   svg.addEventListener("mousemove", (e) => {
     if (uploading) return hideHover();
-    const svgPt = mouseToSvgPoint(svg, e.clientX, e.clientY);
-    const meta = findPieceAtPoint(byId, svgPt);
+    const pt = svg.createSVGPoint();
+    pt.x = e.clientX;
+    pt.y = e.clientY;
+    const svgPt = pt.matrixTransform(svg.getScreenCTM().inverse());
+    let meta = null;
+    for (const m of byId.values()) {
+      try {
+        if (m.originalEl.isPointInFill(svgPt)) {
+          meta = m;
+          break;
+        }
+      } catch (_) {}
+    }
     if (!meta) return hideHover();
     if (uploadedPieces.has(meta.id)) {
-      hideAllPieceIcons();
+      if (hoverArrow) hoverArrow.hidden = true;
       showLocationPopup(meta);
     } else {
       piecePopup.classList.remove("is-visible");
@@ -483,8 +457,19 @@ function bindUploads(svg, elToMeta, byId, uploadedPieces) {
 
   svg.addEventListener("click", (e) => {
     if (uploading) return;
-    const svgPt = mouseToSvgPoint(svg, e.clientX, e.clientY);
-    const meta = findPieceAtPoint(byId, svgPt);
+    const pt = svg.createSVGPoint();
+    pt.x = e.clientX;
+    pt.y = e.clientY;
+    const svgPt = pt.matrixTransform(svg.getScreenCTM().inverse());
+    let meta = null;
+    for (const m of byId.values()) {
+      try {
+        if (m.originalEl.isPointInFill(svgPt)) {
+          meta = m;
+          break;
+        }
+      } catch (_) {}
+    }
     if (!meta || uploadedPieces.has(meta.id)) return;
     currentId = meta.id;
     picker.value = "";
@@ -572,7 +557,7 @@ function bindUploads(svg, elToMeta, byId, uploadedPieces) {
   });
 }
 
-const svg = document.getElementById("quiltSvg");
+const svg = document.querySelector("#quilt svg");
 if (svg) {
   const { elToMeta, byId } = initQuiltPieces(svg);
   window.__quiltPieceCount = byId.size;
