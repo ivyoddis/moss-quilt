@@ -1,7 +1,7 @@
 :root {
   --primary: #B8E600;
   --ink: #000;
-  --margin: 25.65px;
+  --margin: 12.825px;
   --stroke: #1E1E1E;
 }
 
@@ -27,7 +27,7 @@ body {
   overflow-y: auto;
 }
 
-/* Header: white bar, 25.65px margins, 12px padding */
+/* Header: #B8E600 bar, 12.825px margins, 12px padding */
 .header {
   position: fixed;
   inset: 0 0 auto 0;
@@ -42,7 +42,7 @@ body {
   left: 0;
   right: 0;
   box-sizing: border-box;
-  background: #fff;
+  background: #B8E600;
   color: var(--ink);
   user-select: none;
 }
@@ -50,26 +50,34 @@ body {
 .header__left {
   font-family: aktiv-grotesk, sans-serif;
   font-weight: 500;
-  font-size: 19px;
+  font-size: 16.15px;
   flex-shrink: 0;
 }
 
 .header__center {
   font-family: aktiv-grotesk, sans-serif;
   font-weight: 400;
-  font-size: 19px;
+  font-size: 16.15px;
   text-align: center;
   flex: 1;
   min-width: 0;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
 }
 
 .header__center--ticker {
   display: flex;
+  justify-content: center;
   overflow: hidden;
 }
 
-.ticker-wrap {
+.ticker-viewport {
+  width: 25vw;
+  overflow: hidden;
+}
+
+.ticker-track {
   display: inline-flex;
   align-items: center;
   white-space: nowrap;
@@ -77,22 +85,8 @@ body {
   animation: ticker 28s cubic-bezier(0.42, 0, 0.58, 1) infinite;
 }
 
-.ticker-wrap + .ticker-wrap {
-  animation: ticker 28s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-}
-
 .ticker-text {
   display: inline;
-}
-
-.ticker-space {
-  display: inline;
-}
-
-.ticker-smiley {
-  display: inline-block;
-  vertical-align: middle;
-  margin-left: 0.1em;
 }
 
 @keyframes ticker {
@@ -103,7 +97,7 @@ body {
 .header__right {
   font-family: aktiv-grotesk, sans-serif;
   font-weight: 400;
-  font-size: 19px;
+  font-size: 16.15px;
   border: none;
   background: none;
   color: var(--ink);
@@ -128,7 +122,7 @@ button:active,
   min-height: 100vh;
 }
 
-/* Quilt: 25.65px left/right margins */
+/* Quilt: 12.825px left/right margins */
 .quilt {
   margin-left: var(--margin);
   margin-right: var(--margin);
